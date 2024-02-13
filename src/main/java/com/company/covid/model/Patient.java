@@ -12,7 +12,7 @@ public class Patient {
   private String name;
   private String email;
   private String contactNo;
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private Passport passport;
 
     public long getId() {

@@ -8,7 +8,7 @@ public class Passport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long passwordNo;
+    private long passportNo;
     public long getId() {
         return id;
     }
@@ -17,19 +17,19 @@ public class Passport {
         this.id = id;
     }
 
-    public long getPasswordNo() {
-        return passwordNo;
+    public long getPassportNo() {
+        return passportNo;
     }
 
-    public void setPasswordNo(long passwordNo) {
-        this.passwordNo = passwordNo;
+    public void setPassportNo(long passportNo) {
+        this.passportNo = passportNo;
     }
 
     @Override
     public String toString() {
         return "Passport{" +
                 "id=" + id +
-                ", passwordNo=" + passwordNo +
+                ", passportNo=" + passportNo +
                 '}';
     }
 }
