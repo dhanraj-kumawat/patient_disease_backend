@@ -1,19 +1,11 @@
-package com.company.covid.model;
+package com.company.covid.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "patient_tb")
-
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PatientDto {
   private long id;
   private String name;
   private String email;
   private String contactNo;
-  @OneToOne
-  private Passport passport;
+  private PassportDto passportDto;
 
     public long getId() {
         return id;
@@ -47,12 +39,12 @@ public class Patient {
         this.contactNo = contactNo;
     }
 
-    public Passport getPassport() {
-        return passport;
+    public PassportDto getPassportDto() {
+        return passportDto;
     }
 
-    public void setPassport(Passport passport) {
-        this.passport = passport;
+    public void setPassportDto(PassportDto passportDto) {
+        this.passportDto = passportDto;
     }
 
     @Override
@@ -62,7 +54,7 @@ public class Patient {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", contactNo='" + contactNo + '\'' +
-                ", passport=" + passport +
+                ", passport=" + passportDto +
                 '}';
     }
 }
