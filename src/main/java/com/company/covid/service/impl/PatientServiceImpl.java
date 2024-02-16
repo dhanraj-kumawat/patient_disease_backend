@@ -4,44 +4,50 @@ import com.company.covid.dao.PassportDao;
 import com.company.covid.dao.PatientDao;
 import com.company.covid.dto.PassportDto;
 import com.company.covid.dto.PatientDto;
+import com.company.covid.exception.PatientRecordNotFoundException;
+import com.company.covid.mapper.PassportMapper;
+import com.company.covid.mapper.PatientMapper;
 import com.company.covid.model.Passport;
 import com.company.covid.model.Patient;
 import com.company.covid.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
-    PatientDao patientDao;
+    private PatientDao patientDao;
     @Override
     public PatientDto createPatient(PatientDto patientDto) {
-        Patient patient = new Patient();
-//        patient.setId(patientDto.getId());
-        patient.setName(patientDto.getName());
-        patient.setEmail(patientDto.getEmail());
-        patient.setContactNo(patientDto.getContactNo());
-        Passport passport = new Passport();
-//        passport.setId(patientDto.getPassportDto().getId());
-        passport.setPassportNo(patientDto.getPassportDto().getPassportNo());
-        patient.setPassport(passport);
-
+        Patient patient = PatientMapper.toEntity(patientDto);
         Patient dbPatient = patientDao.save(patient);
 
+        PatientDto responsePatientDto = PatientMapper.toDto(dbPatient);
+        return responsePatientDto;
+    }
 
+    @Override
+    public PatientDto getPatient(long id) {
+        Optional<Patient> dbPatient = patientDao.findById(id);
+        if(dbPatient.isEmpty()){
+            throw new PatientRecordNotFoundException("patient with id: "+id+ " not found!");
+        }
+        else{
+            // unwrapping data form optional class
+            Patient patient = dbPatient.get();
+            return PatientMapper.toDto(patient);
+        }
+    }
 
-        PatientDto responsePatient = new PatientDto();
-        responsePatient.setId(dbPatient.getId());
-        responsePatient.setEmail(dbPatient.getEmail());
-        responsePatient.setName(dbPatient.getName());
-        responsePatient.setContactNo(dbPatient.getContactNo());
-
-        PassportDto passportDto = new PassportDto();
-        passportDto.setId(dbPatient.getPassport().getId());
-        passportDto.setPassportNo(dbPatient.getPassport().getPassportNo());
-        responsePatient.setPassportDto(passportDto);
-
-        return responsePatient;
+    @Override
+    public List<PatientDto> getPatients() {
+        List<PatientDto> patientDtos = new ArrayList<>();
+        patientDao.findAll().stream().forEach((patient -> { patientDtos.add(PatientMapper.toDto(patient));}));
+        return patientDtos;
     }
 }
