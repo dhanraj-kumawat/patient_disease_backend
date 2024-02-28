@@ -31,4 +31,9 @@ public class PatientController {
     public List<PatientDto> getPatients(){
         return patientService.getPatients();
     }
+
+    @DeleteMapping("/patients/{id}")
+    public PatientDto deletePatient(@PathVariable long id){
+        return patientService.deletePatient(id);
+    }
 }

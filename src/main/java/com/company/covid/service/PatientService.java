@@ -13,4 +13,5 @@ public interface PatientService {
 
     public PatientDto getPatient(long id);
     public List<PatientDto> getPatients();
+    public PatientDto deletePatient(long id);
 }

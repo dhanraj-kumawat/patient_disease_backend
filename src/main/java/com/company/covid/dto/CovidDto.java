@@ -5,7 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PassportDto {
+public class CovidDto {
     private long id;
-    private long passportNo;
+    private String name;
+    private String variant;
+
 }

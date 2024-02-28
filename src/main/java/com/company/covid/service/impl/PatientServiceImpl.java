@@ -1,13 +1,9 @@
 package com.company.covid.service.impl;
 
-import com.company.covid.dao.PassportDao;
 import com.company.covid.dao.PatientDao;
-import com.company.covid.dto.PassportDto;
 import com.company.covid.dto.PatientDto;
 import com.company.covid.exception.PatientRecordNotFoundException;
-import com.company.covid.mapper.PassportMapper;
 import com.company.covid.mapper.PatientMapper;
-import com.company.covid.model.Passport;
 import com.company.covid.model.Patient;
 import com.company.covid.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +45,17 @@ public class PatientServiceImpl implements PatientService {
         List<PatientDto> patientDtos = new ArrayList<>();
         patientDao.findAll().stream().forEach((patient -> { patientDtos.add(PatientMapper.toDto(patient));}));
         return patientDtos;
+    }
+
+    @Override
+    public PatientDto deletePatient(long id) {
+        Optional<Patient> dbPatient = patientDao.findById(id);
+        if(dbPatient.isEmpty()){
+            throw new PatientRecordNotFoundException("Patient with id: "+ id + " does not exist!");
+        }
+        else{
+            patientDao.deleteById(id);
+            return PatientMapper.toDto(dbPatient.get());
+        }
     }
 }
